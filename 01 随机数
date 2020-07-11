@@ -1,0 +1,88 @@
+#可以指定一批生成的个数，可以指定数值的范围，可以调整每批生成数字的个数
+测试01：基本的需求
+import random
+
+class RandomNum:
+    random_num = []
+
+    def randomnum(self,x=1,y=20,z=10):
+        while True:
+            (self.random_num).append(random.randrange(x,y+1))
+            if len(self.random_num) == z:
+                break
+        return self.random_num
+
+stest = RandomNum()
+print(stest.randomnum(1,30))
+
+测试02：特殊写法，类方法
+import random
+class randnum:
+    @classmethod
+    def create(cls,min=0,max=100,num=10):
+        return [random.randint(min,max) for x in range(num)]
+ 
+ 测试03：内部优化
+import random
+class randnum:
+    def __init__(self,minnum=0,maxnum=100,num=10):
+        self.min = minnum
+        self.max = maxnum
+        self.num = num
+
+    def create(self):
+        return [random.randint(self.min,self.max) for x in range(self.num)]
+
+ste = randnum()
+print(ste.create())
+
+
+测试04：复杂方式
+分析：
+<1>解决随机数边界问题
+<2>解决随机数生成
+<3>解决用户输入次数问题
+需求01：使用生成器
+import random
+
+class RandomGenerator:
+    def __init__(self,count=10,start=1,stop=100):
+        self.count = count
+        self.start = start
+        self.stop = stop
+        self.gen = self._generate()  #属性使用方法的返回值，为一个生成器对象
+
+    def _generate(self):
+        while True:
+            yield random.randint(self.start,self.stop)
+
+    def generate(self):
+        return [next(self.gen) for _ in range(self.count)]
+
+ste = RandomGenerator()
+lst = ste.generate()
+print(lst)
+分析：此处的写法用户发发控制次数
+
+需求02：用户控制次数
+import random
+
+class RandomGenerator:
+    def __init__(self,count=10,start=1,stop=100):
+        self.count = count
+        self.start = start
+        self.stop = stop
+        self.gen = self._generate()  #属性使用方法的返回值，为一个生成器对象
+
+    def _generate(self):  #一次就可以生成 count 个
+        while True:
+            yield [random.randint(self.start,self.stop) for _ in range(self.count)]
+
+    def generate(self,count):
+        self.count = count
+        return next(self.gen)  #调用一次即可
+
+ste = RandomGenerator()
+lst = ste.generate(15)
+print(lst)
+
