@@ -1,0 +1,69 @@
+实现华氏温度和摄氏温度的转换
+摄氏温度： C = 5 x (F-32)/9
+华氏温度： F = 9 x C/5 + 32
+完成以上转换后，增加与开氏温度的转换，K=C + 273.155
+
+思路分析：
+<1>判断传入的数值可以在传入时带单位
+<2>如果只是做工具使用，则写为 classmethod 方法即可
+<3>如果要保存数据，最好作为实例使用
+
+测试01：多个类单独测试使用
+class fahrenheit:  #华氏温度
+    def __init__(self,c):
+        self.c = c
+
+    def forwardf(self):
+        return 9 * self.c/5 + 32
+
+class CentigradeTemp:  #摄氏温度
+    def __init__(self,f):
+        self.f = f
+
+    def forwardc(self):
+        return 5 * (self.f-32) / 9
+
+class KelvinTemp:  #开氏温度
+    def __init__(self,kc):
+        self.k = kc
+
+    def forwardk(self):
+        return self.kc + 273.155
+
+测试02：全部写在一个类里面
+class Temperature:
+    def __init__(self,c=None,f=None,k=None):
+        self.c = c
+        self.f = f
+        self.k = k
+
+    def getk(self):
+        return
+
+    def getc(self):
+        return
+
+    def getf(self):
+        return
+
+测试03：添加工具类
+class Temperature:
+    def __init__(self,c=None,f=None,k=None):
+        self.c = c
+        self.f = f
+        self.k = k
+
+    def getk(self):  #当作对象使用
+        return
+
+    def getc(self):
+        return
+
+    def getf(self):
+        return
+
+    @classmethod
+    def c2f(self,c):  #当作工具使用
+        return self.f
+
+基本原则：类无法调用实例，实例可以调用类
