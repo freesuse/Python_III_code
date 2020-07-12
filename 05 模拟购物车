@@ -1,0 +1,17 @@
+模拟购物车购物
+
+测试01：基本的框架
+class Item:  #商品
+    pass
+
+class Color:  #商品的颜色
+    RED = 0
+    Other = 1000
+
+class Cart:  #购物车
+    def __init__(self):
+        self.lst = []  #购物车列表
+
+    def additem(self,item:Item):  #添加商品到购物车
+        self.lst.append(item)
+
