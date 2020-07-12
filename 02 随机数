@@ -55,10 +55,39 @@ class Point:
         self.x = x
         self.y = y
 
-    def __repr__(self):  #返回值的表现形式
+    def __repr__(self):  #返回值的表现形式python内部机制调用
         return '{}:{}'.format(self.x,self.y)
 
 ste = RandomGenerator()
 lst1 = [Point(*v) for v in zip(ste.generate(10),ste.generate(10))]
 print(lst1)
+
+
+测试03：与上述对等的方式
+import random
+
+class RandomGenerator:
+    def __init__(self,count=10,start=1,stop=100):
+        self.count = count
+        self.start = start
+        self.stop = stop
+        self.gen = self._generate()  #属性使用方法的返回值，为一个生成器对象
+
+    def _generate(self):  #一次就可以生成 count 个
+        while True:
+            yield [random.randint(self.start,self.stop) for _ in range(self.count)]
+
+    def generate(self,count):
+        self.count = count
+        return next(self.gen)  #调用一次即可
+
+class Point:
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y
+
+    def __str__(self):  #人为做强制类型转换时使用
+        return '{}:{}'.format(self.x, self.y)
+
+
 
