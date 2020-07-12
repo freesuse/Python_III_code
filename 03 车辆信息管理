@@ -1,0 +1,42 @@
+#记录车的品牌mark、颜色color、价格price、速度speed等特征，并实现增加车辆信息、显示全部车辆信息的功能
+
+测试01：基础使用
+class car:
+    def __init__(self,mark,color,price,speed):
+        self.mark = mark
+        self.color = color
+        self.price = price
+        self.speed = speed
+
+    def addinfo(self):
+        return {'mark': self.mark, 'color': self.color, 'price': self.price, 'speed': self.speed}
+
+s1 = car('benchi','red',100,'100km/h')
+print(s1.addinfo())
+
+
+测试02：车的基本信息属性和保存的信息分开管理
+class Car:
+    def __init__(self,mark,color,price,speed):
+        self.mark = mark
+        self.color = color
+        self.price = price
+        self.speed = speed
+
+    #如果需要修改车的属性，放在此处最合适
+
+class CarInfo:
+    def __init__(self):
+        self.lst = []  #容器应该保存在某个实例上
+
+    def addcar(self,car:Car):
+        self.lst.append(car)
+
+    def getall(self):
+        return self.lst
+
+c1 = CarInfo()
+s1 = Car('benchi','red',100,'100km/h')
+c1.addcar(s1)
+
+print(c1.getall())
