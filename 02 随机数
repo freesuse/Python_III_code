@@ -90,4 +90,32 @@ class Point:
         return '{}:{}'.format(self.x, self.y)
 
 
+测试04：基本的方法打印
+import random
+
+class RandomGenerator:
+    def __init__(self,count=10,start=1,stop=100):
+        self.count = count
+        self.start = start
+        self.stop = stop
+        self.gen = self._generate()  #属性使用方法的返回值，为一个生成器对象
+
+    def _generate(self):  #一次就可以生成 count 个
+        while True:
+            yield [random.randint(self.start,self.stop) for _ in range(self.count)]
+
+    def generate(self,count):
+        self.count = count
+        return next(self.gen)  #调用一次即可
+
+class Point:
+    def __init__(self,x,y):
+        self.x = x
+        self.y = y
+
+ste = RandomGenerator()
+lst1 = [Point(*v) for v in zip(ste.generate(10),ste.generate(10))]
+
+for p in lst1:
+    print(p.x,p.y)
 
