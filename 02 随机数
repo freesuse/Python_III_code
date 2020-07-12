@@ -1,0 +1,33 @@
+#使用上题中的类，随机生成20个数字，两两配对形成维坐标系的坐标，把这些坐标组织起来，并打印输出
+测试01：使用静态方法传递参数
+import random
+
+class RandomGenerator:
+    def __init__(self,count=10,start=1,stop=100):
+        self.count = count
+        self.start = start
+        self.stop = stop
+        self.gen = self._generate()  #属性使用方法的返回值，为一个生成器对象
+
+    def _generate(self):  #一次就可以生成 count 个
+        while True:
+            yield [random.randint(self.start,self.stop) for _ in range(self.count)]
+
+    def generate(self,count):
+        self.count = count
+        return next(self.gen)  #调用一次即可
+
+    @staticmethod
+    def tumpleList(lstump):  #使用静态方法生成坐标
+        return [(lstump[i],lstump[i+1]) for i in range(len(lstump)) if i < 20 if i%2 == 0]
+
+ste = RandomGenerator()
+lst = ste.generate(20)
+print(lst)
+print(ste.tumpleList(lst))
+
+输出信息如下：
+[30, 30, 4, 40, 22, 32, 73, 23, 77, 99, 60, 11, 79, 7, 22, 1, 95, 72, 17, 93]
+[(30, 30), (4, 40), (22, 32), (73, 23), (77, 99), (60, 11), (79, 7), (22, 1), (95, 72), (17, 93)]
+
+
