@@ -77,3 +77,47 @@ print(t2.area)
 t3 = Circular(4)
 print(t3.area)
 
+
+测试03：防止直接调用父类的对象
+import math
+
+class Share:
+    @property
+    def area(self):
+        raise NotImplementedError('基类未实现')
+
+class Triangle(Share):
+    def __init__(self,a,b,c):
+        self.a = a
+        self.b = b
+        self.c = c
+
+    @property
+    def area(self):
+        p = (self.a + self.b + self.c) / 2
+        return math.sqrt(p*(p-self.a)*(p-self.b)*(p-self.c))
+
+class Rectangle(Share):
+    def __init__(self,width,height):
+        self.width = width
+        self.height = height
+
+    @property
+    def area(self):
+        return self.width * self.height
+
+class Circle(Share):
+    def __init__(self,radius):
+        self.d = radius * 2
+
+    @property
+    def area(self):
+        return math.pi * self.d * self.d * 0.25
+
+#实例对象列表
+shapes = [Triangle(3,4,5),Rectangle(3,4),Circle(4)]
+for s in shapes:
+    print('The area of {} = {}'.format(s.__class__.__name__,s.area))
+
+# Share().area  #测试直接调用父类的类属性
+
