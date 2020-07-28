@@ -1,0 +1,79 @@
+#Shape基类，要求所有的子类都必须提供面积的计算，子类有三角形，矩形，圆形
+测试01：按照题意，分别计算
+class Share:
+    def __init__(self):
+        print('Area calculation')
+
+class Triangle(Share):
+    @staticmethod
+    def calculation(l,h):
+        print('三角形的面积为：{}'.format((l*h)/2))
+
+class Rectangle(Share):
+    @staticmethod
+    def calculation(s,k):
+        print('矩形的面积为：{}'.format(s * k))
+
+class Circular(Share):
+    @staticmethod
+    def calculation(r):
+        print('圆形的面积为：{}'.format(r * r * 3.14))
+
+#计算三角形
+s = Triangle()
+s.calculation(4,3)
+
+#计算矩形
+j = Rectangle()
+j.calculation(4,3)
+
+#计算圆
+s = Circular()
+s.calculation(4)
+
+
+
+测试02：
+分析：初始化里面写代加工的数据
+import math
+
+class Share:
+    @property
+    def area(self):
+        return
+
+class Triangle(Share):
+    def __init__(self,l,h):
+        self.l = l
+        self.h = h
+
+    @property
+    def area(self):
+        return (self.l * self.h) / 2
+
+class Rectangle(Share):
+    def __init__(self,w,s):
+        self.w = w
+        self.s = s
+
+    @property
+    def area(self):
+        return self.w * self.s
+
+class Circular(Share):
+    def __init__(self,r):
+        self.r = r
+
+    @property
+    def area(self):
+        return (self.r ** 2) * math.pi
+
+t1 = Triangle(4,5)
+print(t1.area)
+
+t2 = Rectangle(4,5)
+print(t2.area)
+
+t3 = Circular(4)
+print(t3.area)
+
