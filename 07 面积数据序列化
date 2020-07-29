@@ -67,3 +67,41 @@ s = Circular(5)
 a = s.area
 Dump(a).dumpxl
 
+
+测试03：序列化对象的数据，混合的方式
+import math
+import msgpack
+import json
+
+class Share:
+    @property
+    def area(self):
+        return
+
+class Circular(Share):
+    def __init__(self,r):
+        self.r = r
+
+    @property
+    def area(self):
+        return (self.r ** 2) * math.pi
+
+class SerializableMixin:
+    def dumps(self,t='json'):
+        if t == 'json':
+            return json.dumps(self.__dict__)
+        elif t == 'msgpack':
+            return msgpack.packb(self.__dict__)
+        else:
+            raise NotADirectoryError('没有实现的序列化')
+
+class SerializableCircularMixin(SerializableMixin,Circular):
+    pass
+
+# print(SerializableCircularMixin.mro())
+scm = SerializableCircularMixin(4)
+print(scm.area)
+# print(scm.__dict__)
+s = scm.dumps('msgpack')
+print(s)
+
