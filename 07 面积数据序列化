@@ -1,0 +1,69 @@
+#上题圆类的数据可序列化
+测试01：基础写法，序列化单独写一个类
+import math
+import pickle
+
+class Share:
+    @property
+    def area(self):
+        return
+
+class Circular(Share):
+    def __init__(self,r):
+        self.r = r
+    @property
+    def area(self):
+        return (self.r ** 2) * math.pi
+
+class Dump:   #序列化类
+    def __init__(self,d):
+        self.d = d
+
+    @property
+    def dumpxl(self):  #序列化操作
+        with open('G:/firefox/debain','wb+') as f:
+            pickle.dump(self.d,f)
+        
+        # 反序列化操作
+        # with open('G:/firefox/debain','rb+') as f:
+        #     print(pickle.load(f))
+
+s = Circular(5)
+a = s.area
+Dump(a).dumpxl
+
+
+测试02：使用msgpack进行序列化
+import math
+import msgpack
+
+class Share:
+    @property
+    def area(self):
+        return
+
+class Circular(Share):
+    def __init__(self,r):
+        self.r = r
+    @property
+    def area(self):
+        return (self.r ** 2) * math.pi
+
+class Dump:   #序列化类
+    def __init__(self,d):
+        self.d = d
+
+    @property
+    def dumpxl(self):  #序列化操作
+        with open('G:/firefox/debain','wb+') as f:
+            xuline = msgpack.packb(self.d)
+            print(xuline)
+
+        # 反序列化操作
+        with open('G:/firefox/debain','rb+') as f:
+            print(msgpack.unpackb(xuline))
+
+s = Circular(5)
+a = s.area
+Dump(a).dumpxl
+
