@@ -1,0 +1,48 @@
+#单向链表实现 append、iternodes方法
+
+分析：
+<1>整体来看列表就是一个对象，类似一个列表
+<2>里面的元素当作一个类，类里面有2个属性
+<3>整个链表需要2个类即可
+
+测试01：基本写法
+class SingleNode:  #代表一个数据节点
+    def __init__(self,val,next=None):
+        self.val = val
+        self.next = next
+
+class LinkedList:
+    def __init__(self):
+        self.nodes = []   #存储数据
+        self.head = None  #第一个节点对象位置
+        self.tail = None  #最后一个节点对象位置
+
+    def append(self,val):
+        node = SingleNode(val)  #数据对象
+        prev = self.tail  #每个对象最开始的位置
+        if prev is None:  #如果tail为none，则集合为空，tail为最后一个对象
+            self.head = node  #head获取第一个数据节点的实例对象
+        else:
+            prev.next = node  #下一个节点的对象地址
+        self.nodes.append(node)  #添加元素对象到数据区域
+        self.tail = node  #只要添加元素，tail一定要为node，即指向下一个元素
+
+    #迭代元素
+    def iternodes(self,reverse=False):
+        current = self.head
+        while current:
+            yield current
+            current = current.next  #当前指针下移一个位置
+
+l1 = LinkedList()
+l1.append('abc')
+# l1.append(1).append(2)
+l1.append(1)
+l1.append(2)
+l1.append('def')
+
+print(l1.head,l1.tail)
+
+for item in l1.iternodes():
+    print(item)
+
