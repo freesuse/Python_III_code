@@ -54,6 +54,49 @@ class LinkedList:
             prev.next = None
         return tail.val
 
+    #获取元素，使用索引
+    def getitem(self,index):
+        if index < 0:  #此处不支持负索引
+            return None
+        current = None
+        for i,node in enumerate(self.iternodes()):
+            if i == index:
+                current = node
+                break
+        if current is None:
+            return None   #等价于 if current is not None
+        else:
+            return current
+
+    #添加
+    def insert(self,index,val):
+        if index < 0:
+            raise Exception('Error')
+
+        current = None
+        for i,node in enumerate(self.iternodes()):
+            if i == index:
+                current = node
+                break
+        if current is None:
+            self.append(val)
+            return
+
+        prev = current.prev
+        # next = current.next
+
+        node = SingleNode(val)
+        if prev is None:  #头部插入
+            self.head = node
+            node.next = current
+            current.prev = node
+        else:
+            node.prev = prev
+            node.next = current
+            current.prev = node
+            prev.next = node
+
+
 l1 = LinkedList()
 node = SingleNode('abc')
 l1.append(node)
@@ -70,14 +113,17 @@ l1.append(node)
 node = SingleNode('def')
 l1.append(node)
 
+#添加一个数据
+l1.insert(6,66)
+l1.insert(7,77)
+l1.insert(0,'123')
+l1.insert(1,'456')
+l1.insert(30,'qwert')
+
 #移除
-l1.pop()
-l1.pop()
-l1.pop()
+# l1.pop()
+# l1.pop()
+# l1.pop()
 
-# for node in l1.iternodes():  #正向
-#     print(node)
-
-for node in l1.iternodes(True):  #反向
+for node in l1.iternodes():  #正向
     print(node)
-
