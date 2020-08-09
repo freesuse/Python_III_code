@@ -1,0 +1,141 @@
+测试01：在同一个对象里面实现后一个要求对前一个结果的复用
+class fib:
+    def __init__(self):
+        self.lst = [0,1,1]
+
+    def __call__(self,x):
+        if x > 3:
+            for i in range(len(self.lst),x):
+                self.lst.append(self.lst[i-2]+self.lst[i-1])
+            else:
+                return self.lst
+        elif x == len(self.lst):
+            return self.lst
+        else:
+            return None
+
+a = fib()
+print(a(10))
+print(a(12))
+print(a(14))
+输出结果如下：
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233]
+
+测试02：输出具体的某一项元素
+class Fib:
+    def __init__(self):
+        self.items = [0,1,1]
+
+    def __call__(self,index):
+        if index < 0:
+            raise IndexError('Wrong Index')
+        if index < len(self.items):
+            return self.items[index]
+
+        for i in range(3,index+1):
+            self.items.append(self.items[i-1] + self.items[i-2])
+
+        return self.items[index]
+
+print(Fib()(100))  #输出具体的某一项元素
+
+
+测试03：增加使用索引获取元素的方法
+class fib:
+    def __init__(self):
+        self.lst = [0,1,1]
+
+    def __call__(self,x):
+        if x > 3:
+            for i in range(len(self.lst),x):
+                self.lst.append(self.lst[i-2]+self.lst[i-1])
+            else:
+                return self.lst
+        elif x == len(self.lst):
+            return self.lst
+        else:
+            return None
+
+    def __getitem__(self,item):  #使用索引获取元素
+        return self.lst[item]
+
+a = fib()
+print(a(10))
+print(a(12))
+print(a(14))
+
+print(a[6])
+
+
+#进阶部分
+class fib:
+    def __init__(self):
+        self.lst = [0,1,1]
+
+    def __len__(self):  #获取列表长度
+        return len(self.lst)
+
+    def __call__(self,x):
+        if x > 3:
+            for i in range(len(self.lst),x):
+                self.lst.append(self.lst[i-2]+self.lst[i-1])
+            else:
+                return self.lst
+        elif x == len(self.lst):
+            return self.lst
+        else:
+            return None
+
+    def __getitem__(self,item):  #使用索引获取元素
+        if item < 0:
+            return None
+        elif item < len(self):  #调用内部的__len__
+            return self.lst[item]
+
+a = fib()
+print(a(10))
+print(a(12))
+print(a(14))
+
+print(a[6])
+
+
+测试04：增加迭代的方法，返回容器长度，支持索引的方法
+class Fib:
+    def __init__(self):
+        self.items = [0,1,1]
+
+    def __call__(self, index):
+        return self[index]
+
+    def __iter__(self):
+        return iter(self.items)
+
+    def __len__(self):
+        return len(self.items)
+
+    def __getitem__(self, index):
+        if index < 0:
+            raise IndexError('Wrong Index')
+        elif index < len(self.items):
+            return self.items[index]
+
+        for i in range(len(self),index+1):
+            self.items.append(self.items[i-1] + self.items[i-2])
+        return self.items[index]
+
+    def __str__(self):
+        return str(self.items)
+
+    __repr__ = __str__
+
+fib = Fib()
+print(fib(5),len(fib))  #全部计算
+print(fib(10),len(fib))  #部分计算
+for x in fib:
+    print(x)
+
+print(fib[5],fib[6])  #索引访问，不计算
+
