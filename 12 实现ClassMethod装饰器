@@ -1,0 +1,60 @@
+(1)简介
+类装饰器：当用此装饰器定义方法时，我们将类而不是类的实例作为第一个参数，这意味着我们可以在此方法中直接使用类的属性，而不是特定的实例的属性
+(2)实现ClassMethod装饰器，完成classmethod装饰器的功能
+<1>最终的目地，实现以下的样式
+class A:
+    @ClassMethod
+    def bar(cls):
+        print(cls.__name__)
+
+#最终的调用方式
+A.bar()
+
+<2>实现实例
+测试01：返回依然无法调用
+class ClassMethod:  #实现 ClassMethod 类装饰器
+    def __init__(self,fn):
+        print(fn)
+        self.fn = fn  #记录最初还没有被覆盖的bar()方法
+
+    def __get__(self, instance, owner):
+        print(self, instance, owner)
+        return self.fn(owner)  #此处返回会报异常
+
+class A:
+    @ClassMethod  #bar = ClassMethod(bar)
+    def bar(cls):
+        # print(cls.__name__)
+        return cls.__name__
+
+f = A.bar
+print(f)
+f()
+
+测试02：
+from functools import partial
+
+class ClassMethod:  #实现 ClassMethod 类装饰器
+    def __init__(self,fn):
+        print(fn)
+        self.fn = fn  #记录最初还没有被覆盖的bar()方法
+
+    def __get__(self, instance, owner):
+        print(self, instance, owner)
+        # return self.fn(owner)  #此处返回会报异常
+        return partial(self.fn,owner)  #返回值为 self.fn(owner)
+        #包装原函数，返回新函数
+
+class A:
+    @ClassMethod  #bar = ClassMethod(bar)
+    def bar(cls):
+        print(cls.__name__)
+
+f = A.bar
+print(f)
+f()
+输出结果如下：
+<function A.bar at 0x000002666D5B2510>
+<__main__.ClassMethod object at 0x000002666CFF5D68> None <class '__main__.A'>
+functools.partial(<function A.bar at 0x000002666D5B2510>, <class '__main__.A'>)
+A
