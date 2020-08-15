@@ -1,0 +1,53 @@
+(1)简介
+<1>静态装饰器：当用此装饰器定义方法时，我们不会传递类或实例作为它的参数，这意味着我们可以在类中放置一个函数，但它不能访问该类的实例
+
+<2>staticmethod用于修饰类中的方法，使其可以在不创建类实例的情况下调用方法，这样做的好处是执行效率比较高; 当然，也可以像一般的方法一样用实例调用该方法; 该方法一般被称为静态方法; 静态方法不可以引用类中的属性或方法，其参数列表也不需要约定的默认参数self; 个人觉得，静态方法就是类对外部函数的封装，有助于优化代码结构和提高程序的可读性; 当然了，被封装的方法应该尽可能的和封装它的类的功能相匹配
+测试01：基本的测试方法
+class Time():
+    def __init__(self,sec):
+        self.sec = sec
+
+    @staticmethod  #声明一个静态方法
+    def sec_minutes(s1,s2):  #返回两个时间差
+        return abs(s1-s2)
+
+    def debain(self):
+        return "123"
+
+t = Time(10)  #分别使用类名调用和使用实例调用静态方法
+print(Time.sec_minutes(10,5),t.sec_minutes(t.sec,5))  #直接使用类调用
+# print(Time(5).debain())  #普通方法只能使用对象调用
+
+(2)实现StaticMethod装饰器，完成staticmethod装饰器的功能
+<1>最终的目地，实现以下的样式
+class A:
+    @StaticMethod   #类装饰器
+    def foo():
+        print('static')
+
+#最终的调用方式
+A.foo()
+
+<2>实现实例
+class StaticMethod:  #实现 StaticMethod 类装饰器
+    def __init__(self,fn):
+        print(fn)
+        self.fn = fn  #记录最初还没有被覆盖的foo()方法
+
+    def __get__(self, instance, owner):
+        print(self, instance, owner)
+        return self.fn
+
+class A:
+    @StaticMethod  #类装饰器 foo = StaticMethod(foo) 此处会覆盖下面的foo()方法
+    def foo():
+        print('static')
+
+f = A.foo  #拿到最初的foo()方法,此处触发__get__
+print(f)
+f()  #调用最初的 foo() 方法
+输出内容如下：
+<function A.foo at 0x0000015B91FC2510>
+<__main__.StaticMethod object at 0x0000015B91FA6438> None <class '__main__.A'>
+<function A.foo at 0x0000015B91FC2510>
+static
