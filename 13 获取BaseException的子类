@@ -1,0 +1,26 @@
+测试01：获取BaseException的子类
+def foo(cls, count=0):
+   for i in cls.__subclasses__():
+       if count == 0:
+           print(count * '\t' +   '+-- ' + str(i))
+       else:
+            print((count - 1) * '\t'+ '|' + '\t' +  '+-- ' + str(i))
+       if  i.__subclasses__() :
+           count += 1
+           foo(i, count)
+       else:
+           continue
+
+foo(BaseException)
+
+
+
+测试02：递归打印BaseException的结构
+def showTree(cls:type,n):
+    temp = "" if n<2 else "   "+"|   "*(n-2)
+    print(temp + "+--" if n else temp,cls.__name__,sep=" " if n else "")
+    for name in cls.__subclasses__():
+        showTree(name,n+1)
+
+showTree(BaseException,0)
+
